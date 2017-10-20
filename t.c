@@ -1,10 +1,11 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
-
-
-int main() {
-  return 0;
+struct t {
+  int a;
+  void (*p) (int * b);
 }
 
+int main() {
+  
+  return 0;
+}
