@@ -1,5 +1,5 @@
-all: sl.c ml.c t.c
-	gcc sl.c ml.c t.c
+all: list.c
+	gcc list.c
 run: all
 	./a.out
 clean:
