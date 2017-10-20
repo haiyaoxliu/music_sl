@@ -61,9 +61,9 @@ struct song_node * insert_order(struct song_node *p, char n[], char a[]) {
 
 struct song_node * free_list(struct song_node *p) {
   while (p) {
+    struct song_node * q = p;
     free(p);
-    p = p -> next;
+    p = q -> next;
   }
   return NULL;
 }
-
