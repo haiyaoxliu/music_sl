@@ -1,0 +1,12 @@
+void insert_song(song_node *);
+struct song_node * find(song_node*);
+struct song_node * find_list(song_node *, song_node *);
+struct song_node * find_artist(song_node *);
+struct song_node * find_artist_list(song_node *, song_node *);
+void print_letter(char);
+void print_library();
+struct song_node * delete_song(song_node *);
+struct song_node * delete_song_list(song_node *, song_node *);
+void delete_all();
+void shuffle();
+void print_rand(struct song_node *);

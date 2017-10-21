@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include "main.h"
 #include "list.c"
 
@@ -74,54 +73,28 @@ void print_library() {
 }
 
 struct song_node * delete_song(song_node *p) {
-  return table[(p -> artist)[0]-'a'] = delete_song_list(table[(p -> artist)[0]-'a'], p);
+  return delete_song_list(table[(p -> artist)[0]-'a'], p);
 }
 
 struct song_node * delete_song_list(song_node h, song_node *p) {
-  song_node *to_ret = h;
-  song_node *tmp = h;
   if (!h) {
     return h;
   }
   while (strcmp(p -> artist, h -> artist) > 0) {
-    tmp = h;
     h = h -> next;
   }
   while (!(strcmp(p -> artist, h -> artist)) && strcmp(p -> name, h -> name) > 0) {
-    tmp = h;
     h = h -> next;
   }
   if (!strcmp(p -> artist, h -> artist) && !strcmp(p -> name, h -> name)) {
-    tmp -> next = h -> next;
-    free(h);
+    
   }
-  return to_ret;
+  else {
+    return NULL;
+  }
 }
   
-void shuffle() {
-  srand(time(NULL));
-  int i;
-  int j = 0;
-  int count[26];
-  for (i = 0; i < 26; i++) {
-    if (table[i]) {
-      count[j] = i;
-      j++;
-    }
-  }
-  print_rand(table[count[rand() % j]]);
-}
-void print_rand(struct song_node *p) {
-  int i = 0;
-  struct song_node *j = p;
-  while (p) {
-    i++;
-  }
-  for (i; i > 0; i--) {
-    j = j -> next;
-  }
-  printf("%s | %s\n", j -> artist, j -> name);
-}
+
 
 
 int main() {
