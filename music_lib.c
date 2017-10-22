@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "main.h"
-#include "list.c"
+#include "music_lib.h"
+#include "list.h"
 
-struct song_node *table[26];
+//struct song_node *table[26];
 
-
-
-void insert_song(song_node *p) {
+void insert_song(struct song_node *p) {
   if (!p) {
     table[(p -> artist)[0]-'a'] = insert_front(table[(p -> artist)[0]-'a'], p);
   }
@@ -18,11 +16,11 @@ void insert_song(song_node *p) {
   return 
 }
 
-struct song_node * find(song_node *p) {
+struct song_node * find(struct song_node *p) {
   return find_list(table[(p -> artist)[0]-'a'], p);
 }
 
-struct song_node * find_list(song_node h, song_node *p) {
+struct song_node * find_list(struct song_node h, song_node *p) {
   if (!h) {
     return h;
   }
@@ -40,11 +38,11 @@ struct song_node * find_list(song_node h, song_node *p) {
   }
 }
 
-struct song_node * find_artist(song_node *p) {
+struct struct song_node * find_artist(struct song_node *p) {
   return find_artist_list(table[(p -> artist)[0]-'a'], p);
 }
 
-struct song_node * find_artist_list(song_node h, song_node *p) {
+struct struct song_node * find_artist_list(song_node h, struct song_node *p) {
   if (!h) {
     return h;
   }
@@ -72,11 +70,11 @@ void print_library() {
   }
 }
 
-struct song_node * delete_song(song_node *p) {
+struct song_node * delete_song(struct song_node *p) {
   return delete_song_list(table[(p -> artist)[0]-'a'], p);
 }
 
-struct song_node * delete_song_list(song_node h, song_node *p) {
+struct song_node * delete_song_list(struct song_node h, struct song_node *p) {
   if (!h) {
     return h;
   }
