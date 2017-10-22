@@ -1,5 +1,6 @@
+
 all: list.o music_lib.o test.o
-	gcc -o mlib list.o main.o
+	gcc -o mlib list.o music_lib.o test.o
 
 list.o: list.c list.h
 	gcc -c list.c
