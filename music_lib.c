@@ -7,17 +7,16 @@
 #include "music_lib.h"
 
 void insert_song(struct song_node *p, struct song_node *table[26]) {
-  
-  printf("in func\n\n\n\n\n");
-  //if (!p) {
-  //table[(p -> artist)[0]-'a'] = insert_front(table[(p -> artist)[0]-'a'], p);
-  //}
-  //else {
   int i = p->artist[0]-'a';
-  printf("index defined\n\n\n\n\n\n\n");
-  table[i] = insert_order(table[i], table[i]);//create(p->name,p->artist));//malloc(sizeof(struct song_node));
-  printf("value set\n\n\n\n\n\n\n");
-    //}
+  if(!table[i]) {
+    table[i] = p;
+    return;
+  }
+
+  struct song_node *tmp = create(table[i]->name,table[i]->artist);
+  tmp->next = table[i]->next;
+  table[i] = insert_order(tmp, p);
+
   return;
 }
 
@@ -40,7 +39,7 @@ struct song_node * find_list(struct song_node *h, struct song_node *p) {
     h = h -> next;
   }
   //printf("2");
-
+ 
   if (!strcmp(p -> artist, h -> artist) && !strcmp(p -> name, h -> name)) {
     //printf("3");
     return h;
@@ -53,6 +52,14 @@ struct song_node * find_list(struct song_node *h, struct song_node *p) {
 
 struct song_node * find_artist(struct song_node *p, struct song_node *table[26]) {
   return find_artist_list(table[(p -> artist)[0]-'a'], p);
+}
+
+void print_artist(struct song_node *p, struct song_node *table[26]) {
+  struct song_node *tmp = find_artist(p,table);
+  while(tmp && !strcmp(p->artist,tmp->artist)) {
+    printf(" %s |",tmp->name);
+    tmp = tmp -> next;
+  }
 }
 
 struct song_node * find_artist_list(struct song_node *h, struct song_node *p) {
@@ -72,39 +79,23 @@ struct song_node * find_artist_list(struct song_node *h, struct song_node *p) {
 }
 
 void print_letter(char c, struct song_node *table[26]) {
-  char l = 97+c;
-  printf("%c:\t",l);
+  printf("%c:\t",c);
   print_list(table[c-'a']);
+  return;
 }
 
 void print_library(struct song_node *table[26]) {
-  //printf("\np\n");
   int i;
-  //printf("\np\n");
 
   for (i = 0; i < 26; i++) {
-    //printf("p");
-    printf("%p\n",table[i]);
-    if (table[i]) {
-    struct song_node *tmp = table[i];
-    printf("%i:\t",i);
-    //printf("p");
-
-    //char letter = (char)i;
-    //printf("p");
-    //print_letter(letter,table[i]);
-      printf("\n");
-      }
-      else {
-      char l = 'a'+i;
-      //printf();
-      printf("%c\n",l);
-      }
+    char l = 'a'+i;
+    printf("%c:\t",l);
+    print_list(table[i]);
   }
 }
 
-struct song_node * delete_song(struct song_node *p, struct song_node *table[26]) {
-  return delete_song_list(table[(p -> artist)[0]-'a'], p);
+void delete_song(struct song_node *p, struct song_node *table[26]) {
+  table[(p -> artist)[0] - 'a'] = delete_song_list(table[(p -> artist)[0]-'a'], p);
 }
 
 struct song_node * delete_song_list(struct song_node *h, struct song_node *p) {
@@ -114,7 +105,15 @@ struct song_node * delete_song_list(struct song_node *h, struct song_node *p) {
   if (!h) {
     return h;
   }
-  while (strcmp(p -> artist, h -> artist) > 0) {
+  if(!song_comp(h,p)) {
+    h = NULL;
+    return to_ret->next;
+  }
+  while(h && song_comp(h,p)) {
+    tmp = h;
+    h = h->next;
+  }
+  /*while (strcmp(p -> artist, h -> artist) > 0) {
     tmp = h;
     h = h -> next;
   }
@@ -124,7 +123,11 @@ struct song_node * delete_song_list(struct song_node *h, struct song_node *p) {
   }
   if (!strcmp(p -> artist, h -> artist) && !strcmp(p -> name, h -> name)) {
     tmp -> next = h -> next;
-    free(h);
+    h = ;
+  }*/
+  if(h) {
+    tmp -> next = h -> next;
+    free(h);//return to_ret;
   }
   return to_ret;
 }
@@ -132,7 +135,9 @@ struct song_node * delete_song_list(struct song_node *h, struct song_node *p) {
 void delete_all(struct song_node *table[26]) {
   int i;
   for (i = 0; i < 26; i++) {
-    table[i] = free_list(table[i]);
+    if(table[i]) {
+      table[i] = free_list(table[i]);
+    }
   }
 }
 
@@ -147,7 +152,9 @@ void shuffle(struct song_node *table[26]) {
       j++;
     }
   }
-  print_rand(table[count[rand() % j]]);
+  for(i = 0; i < j/2 + rand()%(j/2); i++) { 
+    print_rand(table[count[rand() % j]]);
+  }
 }
 
 void print_rand(struct song_node *p) {
@@ -155,12 +162,14 @@ void print_rand(struct song_node *p) {
   struct song_node *j = p;
   while (p) {
     i++;
+    p = p -> next;
   }
-  while(i > 0) {
+  int count = rand() % i;
+  while(count > 0) {
     j = j -> next;
-    i--;
+    count--;
   }
-  printf("%s | %s\n", j -> artist, j -> name);
+  printf("%s, %s |\n", j -> artist, j -> name);
 }
 
 /*int main() {

@@ -4,11 +4,16 @@
 #include "list.h"
 
 void print_list(struct song_node *p) {
-  while (p != NULL) {
-    printf("%s   \t|\t%s \n", p -> artist, p -> name);
+  if(!p) {
+    printf("NULL\n");
+    return;
+  }
+  while (p) {
+    printf("%s, %s\t| ", p -> artist, p -> name);
     p = p -> next;
   }
-  printf("NULL\n");
+  printf("\n");
+  return;
 }
 
 struct song_node * insert_front(struct song_node *p, struct song_node *n) { //char n[], char a[]) {
@@ -18,6 +23,7 @@ struct song_node * insert_front(struct song_node *p, struct song_node *n) { //ch
 
 int song_comp(struct song_node *p1, struct song_node *p2) {
   if (!strcmp(p1 -> artist, p2 -> artist)) {
+    //printf("\n\ngote\t%s\t%s\n\n",p1->name,p2->name);
     return strcmp(p1 -> name, p2 -> name);
   }
   return strcmp(p1 -> artist, p2 -> artist);
@@ -32,25 +38,38 @@ struct song_node * create(char n[], char a[]) {
 }
 
 struct song_node * insert_order(struct song_node *p, struct song_node *n) { //char n[], char a[]) {
-  //printf("func");
-  //struct song_node *new = (struct song_node*)malloc(sizeof(struct song_node));
-
   if(!p) {
     return n;
   }
-  struct song_node *tmp;
+  
+  struct song_node *tmp = p;
   struct song_node *to_ret = p;
-  //printf("assignments");
-  //strcpy(new -> name, n);
-  //strcpy(new -> artist, a);
-  //printf("new created");
-  while (p && song_comp(n, p) > 0) {
-    //printf("loop");
+  //printf("\n\n%s\t%s\t%p\n\n",to_ret->name,to_ret->artist,to_ret->next);
+  //printf("\n\n%s\t%s\t%p\n\n",tmp->name,tmp->artist,tmp->next);
+  //printf("\n\n%s\t%s\t%p\n\n",n->name,n->artist,n->next);
+
+  //printf("\n\npre\\\n\n");
+  if(song_comp(n,p)<0) {
+    return insert_front(p,n);
+  }
+  while (p && song_comp(n, p) >= 0) {
+    //printf("\n\np tracker\t%s\t%s\t%p\n\n",p->name,p->artist,p->next);
+
     tmp = p;
     p = p -> next;
+
+    //printf("\n\n%s\t%s\t%p\n\n",p->name,p->artist,p->next);
   }
+  //printf("\n\n%s\t%s\t%p\n\n",p->name,p->artist,p->next);
+  
   tmp -> next = n;
   n -> next = p;
+  //printf("\n\n%s\t%s\t%p\n\n",to_ret->name,to_ret->artist,to_ret->next);
+  //printf("\n\n%s\t%s\t%p\n\n",tmp->name,tmp->artist,tmp->next);
+  //printf("\n\n%s\t%s\t%p\n\n",n->name,n->artist,n->next);
+
+
+  //printf("tmp->next: %");
 
   return to_ret;
 }
