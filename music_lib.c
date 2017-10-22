@@ -66,7 +66,7 @@ void print_letter(char c) {
 
 void print_library() {
   int i;
-  for (i = 0; i < 26, i++) {
+  for (i = 0; i < 26; i++) {
     if (table[i]) {
       print_letter('a' + i);
     }
@@ -77,7 +77,7 @@ struct song_node * delete_song(song_node *p) {
   return table[(p -> artist)[0]-'a'] = delete_song_list(table[(p -> artist)[0]-'a'], p);
 }
 
-struct song_node * delete_song_list(song_node h, song_node *p) {
+struct song_node * delete_song_list(song_node *h, song_node *p) {
   song_node *to_ret = h;
   song_node *tmp = h;
   if (!h) {
